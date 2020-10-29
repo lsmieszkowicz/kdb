@@ -1,0 +1,15 @@
+#!/bin/bash 
+
+MD_PATH="./md"
+HTML_PATH="./html"
+
+while [[ true ]]
+do
+    for f in "$MD_PATH/*"
+    do
+        f_html=$(echo $f | sed 's/\.md//')
+        f_html=$(basename $f_html)
+        pandoc -s --quiet -f gfm+task_lists -o "$HTML_PATH/$f_html.html" $f
+    done
+    sleep 1
+done

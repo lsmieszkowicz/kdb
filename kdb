@@ -2,16 +2,15 @@
 
 BROWSER="exo-open --launch WebBrowser"
 EDITOR="gedit"
+SEARCH="dmenu"
 
 MD_PATH="./md"
 HTML_PATH="./html"
 
 for f in "$MD_PATH/*"
 do
-    echo $f
     f_html=$(echo $f | sed 's/\.md//')
     f_html=$(basename $f_html)
-    echo $f_html
     pandoc -s -f gfm+task_lists -o "$HTML_PATH/$f_html.html" $f
 done
 
@@ -20,14 +19,14 @@ do
     opt=$1
     case $opt in
         -b | --browser )
-            choice=$(ls $HTML_PATH | fzf)
+            choice=$(ls $HTML_PATH | $SEARCH)
             $($BROWSER $HTML_PATH/$choice)
             shift ;;
         -a | --all )
             $($BROWSER $HTML_PATH)
             shift ;;
         -e | --edit )
-            choice=$(ls $MD_PATH | fzf)
+            choice=$(ls $MD_PATH | $SEARCH)
             $($EDITOR $MD_PATH/$choice)
             shift ;;
     esac
